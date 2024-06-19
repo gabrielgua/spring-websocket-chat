@@ -23,7 +23,7 @@ public class Message {
     private Chat chat;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "sender_id")
     private User user;
 
     private String content;

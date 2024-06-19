@@ -1,9 +1,15 @@
 package com.github.gabrielgua.websocket_chat.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.usertype.UserTypeSupport;
 
+import java.sql.Types;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -20,7 +26,7 @@ public class Chat {
 
     @Id
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
 
     private String name;

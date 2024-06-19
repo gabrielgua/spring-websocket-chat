@@ -19,6 +19,12 @@ public class ChatService {
         return repository.save(chat);
     }
 
+    @Transactional(readOnly = true)
+    public Chat findById(String uuid) {
+        System.out.println(UUID.fromString(uuid));
+        return repository.findById(UUID.fromString(uuid)).orElseThrow(() -> new RuntimeException("Not found for uuid"));
+    }
+
     @Transactional
     public void remove(Chat chat) {
         if (repository.existsById(chat.getId())) repository.delete(chat);

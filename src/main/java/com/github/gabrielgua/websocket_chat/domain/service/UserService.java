@@ -20,6 +20,11 @@ public class UserService {
         return repository.findAllByStatus(UserStatus.ONLINE);
     }
 
+    @Transactional(readOnly = true)
+    public User findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Not found with id"));
+    }
+
     @Transactional
     public void save(User user) {
         repository.save(user);

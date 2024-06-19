@@ -1,6 +1,6 @@
 CREATE TABLE messages(
     id bigint not null auto_increment,
-    chat_id varchar(32) not null,
+    chat_id varchar(36) not null,
     sender_id bigint not null,
     content varchar(255) not null,
     timestamp datetime not null,
