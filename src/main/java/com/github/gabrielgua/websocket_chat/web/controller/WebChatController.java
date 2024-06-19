@@ -1,5 +1,6 @@
 package com.github.gabrielgua.websocket_chat.web.controller;
 
+import com.github.gabrielgua.websocket_chat.api.mapper.MessageMapper;
 import com.github.gabrielgua.websocket_chat.api.model.MessageRequest;
 import com.github.gabrielgua.websocket_chat.api.model.MessageResponse;
 import com.github.gabrielgua.websocket_chat.domain.model.Message;
@@ -26,38 +27,24 @@ public class WebChatController {
     private final MessageService messageService;
     private final ChatService chatService;
     private final UserService userService;
+    private final MessageMapper mapper;
 
     private static final String chatID = "ca3eb690-7afa-4a5d-b65f-e07cca178cf2";
 
     @MessageMapping("/chats/{chatId}")
     @SendTo("/topic/chat")
-    public MessageResponse processMessage(
-            @DestinationVariable String chatId,
-            @Payload MessageRequest request) {
-        var sender = userService.findById(request.getSenderId());
+    public MessageResponse processMessage(@DestinationVariable String chatId, @Payload MessageRequest request) {
         var chat = chatService.findById(request.getChatId());
+        var sender = userService.findById(request.getSenderId());
 
-        var message = Message.builder()
-                .chat(chat)
-                .user(sender)
-                .content(request.getContent())
-                .build();
+        var message = mapper.toEntity(request, sender, chat);
 
-        message = messageService.save(message);
-
-        return MessageResponse.builder()
-                .id(message.getId())
-                .chatId(message.getChat().getId().toString())
-                .senderId(message.getUser().getId())
-                .content(message.getContent())
-                .timestamp(message.getTimestamp())
-                .build();
+        return mapper.toResponse(messageService.save(message));
     }
 
     @GetMapping("/chats/{chatId}/messages")
     public List<Message> findAllByChat(@PathVariable String chatId) {
         var chat = chatService.findById(chatId);
-
         return messageService.findAllByChat(chat);
     }
 }

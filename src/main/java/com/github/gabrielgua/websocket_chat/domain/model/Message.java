@@ -30,8 +30,4 @@ public class Message {
 
     @CreationTimestamp
     private OffsetDateTime timestamp;
-
-//    @Enumerated(EnumType.STRING)
-//    private MessageStatus status;
-
 }

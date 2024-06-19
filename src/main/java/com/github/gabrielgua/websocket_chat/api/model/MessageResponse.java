@@ -12,8 +12,8 @@ import java.time.OffsetDateTime;
 public class MessageResponse {
 
     private Long id;
-    private String chatId;
-    private Long senderId;
+    private String chat;
+    private String sender;
     private String content;
     private OffsetDateTime timestamp;
 }
