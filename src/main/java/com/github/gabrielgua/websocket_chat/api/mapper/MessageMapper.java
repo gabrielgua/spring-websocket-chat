@@ -7,6 +7,8 @@ import com.github.gabrielgua.websocket_chat.domain.model.Message;
 import com.github.gabrielgua.websocket_chat.domain.model.User;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class MessageMapper {
 
@@ -26,6 +28,12 @@ public class MessageMapper {
                 .user(sender)
                 .content(request.getContent())
                 .build();
+    }
+
+    public List<MessageResponse> toCollectionResponse(List<Message> messages) {
+        return messages.stream()
+                .map(this::toResponse)
+                .toList();
     }
 
 

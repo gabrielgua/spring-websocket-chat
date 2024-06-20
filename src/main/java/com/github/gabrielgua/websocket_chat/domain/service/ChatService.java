@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -14,6 +15,11 @@ public class ChatService {
 
     private final ChatRepository repository;
 
+    @Transactional(readOnly = true)
+    public List<Chat> findAll() {
+        return repository.findAll();
+    }
+
     @Transactional
     public Chat save(Chat chat) {
         return repository.save(chat);
@@ -21,7 +27,6 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public Chat findById(String uuid) {
-        System.out.println(UUID.fromString(uuid));
         return repository.findById(UUID.fromString(uuid)).orElseThrow(() -> new RuntimeException("Not found for uuid"));
     }
 

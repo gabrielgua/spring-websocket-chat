@@ -23,14 +23,14 @@ public class ConnectionController {
     }
 
     @MessageMapping("/user.addUser")
-    @SendTo("/user/topic")
+    @SendTo("/user/public")
     public User connect(@Payload User user) {
         service.connect(user);
         return user;
     }
 
     @MessageMapping("/user.disconnectUser")
-    @SendTo("/user/topic")
+    @SendTo("/user/public")
     public User disconnect(@Payload User user) {
         service.disconnect(user);
         return user;
