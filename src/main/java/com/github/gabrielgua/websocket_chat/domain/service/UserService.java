@@ -32,22 +32,14 @@ public class UserService {
 
 
     @Transactional
-    public void connect(User user) {
-        var exists = repository.existsById(user.getId());
-
-        if (exists) {
-            user.setStatus(UserStatus.ONLINE);
-            repository.save(user);
-        }
+    public User connect(User user) {
+        user.setStatus(UserStatus.ONLINE);
+        return repository.save(user);
     }
 
     @Transactional
-    public void disconnect(User user) {
-        var exists = repository.existsById(user.getId());
-
-        if (exists) {
-            user.setStatus(UserStatus.OFFLINE);
-            repository.save(user);
-        }
+    public User disconnect(User user) {
+        user.setStatus(UserStatus.OFFLINE);
+        return repository.save(user);
     }
 }

@@ -1,5 +1,8 @@
 package com.github.gabrielgua.websocket_chat.web.controller;
 
+import com.github.gabrielgua.websocket_chat.api.mapper.UserMapper;
+import com.github.gabrielgua.websocket_chat.api.model.UserConnectionRequest;
+import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
 import com.github.gabrielgua.websocket_chat.domain.model.User;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import java.util.List;
 public class ConnectionController {
 
     private final UserService service;
+    private final UserMapper mapper;
 
     @GetMapping("/users/connected")
     public List<User> listConnectedUsers() {
@@ -24,15 +28,15 @@ public class ConnectionController {
 
     @MessageMapping("/user.addUser")
     @SendTo("/user/public")
-    public User connect(@Payload User user) {
-        service.connect(user);
-        return user;
+    public UserResponse connect(@Payload UserConnectionRequest request) {
+        var user = service.findById(request.getId());
+        return mapper.toResponse(service.connect(user));
     }
 
     @MessageMapping("/user.disconnectUser")
     @SendTo("/user/public")
-    public User disconnect(@Payload User user) {
-        service.disconnect(user);
-        return user;
+    public UserResponse disconnect(@Payload UserConnectionRequest request) {
+        var user = service.findById(request.getId());
+        return mapper.toResponse(service.disconnect(user));
     }
 }
