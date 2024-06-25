@@ -1,5 +1,6 @@
 package com.github.gabrielgua.websocket_chat.domain.repository;
 
+import com.github.gabrielgua.websocket_chat.domain.model.Chat;
 import com.github.gabrielgua.websocket_chat.domain.model.UserStatus;
 import com.github.gabrielgua.websocket_chat.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

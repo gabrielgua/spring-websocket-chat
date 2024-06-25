@@ -1,5 +1,6 @@
 package com.github.gabrielgua.websocket_chat.domain.service;
 
+import com.github.gabrielgua.websocket_chat.domain.model.Chat;
 import com.github.gabrielgua.websocket_chat.domain.model.UserStatus;
 import com.github.gabrielgua.websocket_chat.domain.model.User;
 import com.github.gabrielgua.websocket_chat.domain.repository.UserRepository;
@@ -29,7 +30,6 @@ public class UserService {
     public void save(User user) {
         repository.save(user);
     }
-
 
     @Transactional
     public User connect(User user) {

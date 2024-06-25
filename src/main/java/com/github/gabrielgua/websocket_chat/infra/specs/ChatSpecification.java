@@ -7,9 +7,9 @@ import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.data.jpa.domain.Specification;
 
-@Join(path = "users", alias = "users")
+@Join(path = "users", alias = "user")
 @And({
-        @Spec(path = "users.id", params = "user", spec = Equal.class)
+        @Spec(path = "user.id", params = "user", spec = Equal.class)
 })
 public interface ChatSpecification extends Specification<Chat> {
 }

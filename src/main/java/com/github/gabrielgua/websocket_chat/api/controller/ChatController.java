@@ -4,17 +4,13 @@ import com.github.gabrielgua.websocket_chat.api.mapper.ChatMapper;
 import com.github.gabrielgua.websocket_chat.api.mapper.UserMapper;
 import com.github.gabrielgua.websocket_chat.api.model.ChatResponse;
 import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
-import com.github.gabrielgua.websocket_chat.domain.model.Chat;
+import com.github.gabrielgua.websocket_chat.domain.model.UserStatus;
 import com.github.gabrielgua.websocket_chat.domain.service.ChatService;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
 import com.github.gabrielgua.websocket_chat.infra.specs.ChatSpecification;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -38,4 +34,20 @@ public class ChatController {
         return userMapper.toCollectionResponse(chat.getUsers().stream().toList());
     }
 
+
+    @GetMapping("/{chatId}/users/count")
+    public long findAllUsersByChat(
+            @RequestParam(required = false) String status,
+            @PathVariable String chatId) {
+        var chat = service.findById(chatId);
+
+        if (status == null) {
+            return chat.getUsers().size();
+        }
+
+        return chat.getUsers().stream()
+                .filter(user -> user.getStatus().equals(UserStatus.valueOf(status)))
+                .toList()
+                .size();
+    }
 }
