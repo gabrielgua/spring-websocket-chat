@@ -38,7 +38,6 @@ public class WebChatController {
 
         var message = mapper.toEntity(request, sender, chat);
         var response = mapper.toResponse(messageService.save(message));
-
         messagingTemplate.convertAndSend("/topic/chats/" + chatId, response);
     }
 

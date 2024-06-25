@@ -26,15 +26,15 @@ public class ConnectionController {
         return service.findAllConnected();
     }
 
-    @MessageMapping("/user.addUser")
-    @SendTo("/user/public")
+    @MessageMapping("/user.connectUser")
+    @SendTo("/topic/notifications")
     public UserResponse connect(@Payload UserConnectionRequest request) {
         var user = service.findById(request.getId());
         return mapper.toResponse(service.connect(user));
     }
 
     @MessageMapping("/user.disconnectUser")
-    @SendTo("/user/public")
+    @SendTo("/topic/notifications")
     public UserResponse disconnect(@Payload UserConnectionRequest request) {
         var user = service.findById(request.getId());
         return mapper.toResponse(service.disconnect(user));
