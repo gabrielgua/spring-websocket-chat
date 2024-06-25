@@ -7,6 +7,7 @@ import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
 import com.github.gabrielgua.websocket_chat.domain.model.Chat;
 import com.github.gabrielgua.websocket_chat.domain.service.ChatService;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
+import com.github.gabrielgua.websocket_chat.infra.specs.ChatSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,14 +28,8 @@ public class ChatController {
     private final UserService userService;
 
     @GetMapping
-    public List<ChatResponse> listAll() {
-        return mapper.toCollectionResponse(service.findAll());
-    }
-
-    @GetMapping("/users/{userId}")
-    public List<ChatResponse> listAllByUser(@PathVariable Long userId) {
-        var user = userService.findById(userId);
-        return mapper.toCollectionResponse(service.findAllByUser(user));
+    public List<ChatResponse> listAll(ChatSpecification filter) {
+        return mapper.toCollectionResponse(service.findAll(filter));
     }
 
     @GetMapping("/{chatId}/users")
@@ -42,4 +37,5 @@ public class ChatController {
         var chat = service.findById(chatId);
         return userMapper.toCollectionResponse(chat.getUsers().stream().toList());
     }
+
 }

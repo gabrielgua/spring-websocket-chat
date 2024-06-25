@@ -3,6 +3,7 @@ package com.github.gabrielgua.websocket_chat.domain.service;
 import com.github.gabrielgua.websocket_chat.domain.model.Chat;
 import com.github.gabrielgua.websocket_chat.domain.model.User;
 import com.github.gabrielgua.websocket_chat.domain.repository.ChatRepository;
+import com.github.gabrielgua.websocket_chat.infra.specs.ChatSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +18,8 @@ public class ChatService {
     private final ChatRepository repository;
 
     @Transactional(readOnly = true)
-    public List<Chat> findAll() {
-        return repository.findAll();
+    public List<Chat> findAll(ChatSpecification filter) {
+        return repository.findAll(filter);
     }
 
     @Transactional
