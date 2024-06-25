@@ -15,4 +15,5 @@ public class ChatResponse {
     private String name;
     private ChatType type;
     private OffsetDateTime createdAt;
+    private long online;
 }

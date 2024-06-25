@@ -22,11 +22,6 @@ public class ChatService {
         return repository.findAll(filter);
     }
 
-    @Transactional
-    public Chat save(Chat chat) {
-        return repository.save(chat);
-    }
-
     @Transactional(readOnly = true)
     public List<Chat> findAllByUser(User user) {
         return repository.findAllByUsersContaining(user);
@@ -36,6 +31,15 @@ public class ChatService {
     public Chat findById(String uuid) {
         return repository.findById(UUID.fromString(uuid)).orElseThrow(() -> new RuntimeException("Not found for uuid"));
     }
+
+
+
+    @Transactional
+    public Chat save(Chat chat) {
+        return repository.save(chat);
+    }
+
+
 
     @Transactional
     public void remove(Chat chat) {

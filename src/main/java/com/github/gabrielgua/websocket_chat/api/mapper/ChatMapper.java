@@ -2,6 +2,7 @@ package com.github.gabrielgua.websocket_chat.api.mapper;
 
 import com.github.gabrielgua.websocket_chat.api.model.ChatResponse;
 import com.github.gabrielgua.websocket_chat.domain.model.Chat;
+import com.github.gabrielgua.websocket_chat.domain.model.UserStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class ChatMapper {
                 .name(chat.getName())
                 .type(chat.getType())
                 .createdAt(chat.getCreatedAt())
+                .online(getStatusCount(chat, "ONLINE"))
                 .build();
     }
 
@@ -22,5 +24,12 @@ public class ChatMapper {
         return chats.stream()
                 .map(this::toResponse)
                 .toList();
+    }
+
+    public long getStatusCount(Chat chat, String status) {
+        return chat.getUsers().stream()
+                .filter(user -> user.getStatus().equals(UserStatus.valueOf(status)))
+                .toList()
+                .size();
     }
 }
