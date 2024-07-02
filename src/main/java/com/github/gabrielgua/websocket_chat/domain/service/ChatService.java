@@ -32,14 +32,10 @@ public class ChatService {
         return repository.findById(UUID.fromString(uuid)).orElseThrow(() -> new RuntimeException("Not found for uuid"));
     }
 
-
-
     @Transactional
     public Chat save(Chat chat) {
         return repository.save(chat);
     }
-
-
 
     @Transactional
     public void remove(Chat chat) {

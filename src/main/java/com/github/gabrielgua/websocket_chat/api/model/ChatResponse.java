@@ -16,4 +16,6 @@ public class ChatResponse {
     private ChatType type;
     private OffsetDateTime createdAt;
     private long online;
+    private long offline;
+    private long members;
 }

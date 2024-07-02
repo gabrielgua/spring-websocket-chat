@@ -16,6 +16,8 @@ public class ChatMapper {
                 .name(chat.getName())
                 .type(chat.getType())
                 .createdAt(chat.getCreatedAt())
+                .members(chat.getUsers().size())
+                .offline(getStatusCount(chat, "OFFLINE"))
                 .online(getStatusCount(chat, "ONLINE"))
                 .build();
     }
