@@ -2,6 +2,7 @@ package com.github.gabrielgua.websocket_chat.api.controller;
 
 import com.github.gabrielgua.websocket_chat.api.mapper.ChatMapper;
 import com.github.gabrielgua.websocket_chat.api.mapper.UserMapper;
+import com.github.gabrielgua.websocket_chat.api.model.ChatCountResponse;
 import com.github.gabrielgua.websocket_chat.api.model.ChatResponse;
 import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
 import com.github.gabrielgua.websocket_chat.domain.service.ChatService;
@@ -32,15 +33,12 @@ public class ChatController {
     }
 
     @GetMapping("/{chatId}/users/count")
-    public long findAllUsersByChatAndStatus(
-            @RequestParam(required = false) String status,
-            @PathVariable String chatId) {
+    public ChatCountResponse countChatUsersWithStatus(@PathVariable String chatId) {
         var chat = service.findById(chatId);
-
-        if (status == null) {
-            return chat.getUsers().size();
-        }
-
-        return mapper.getStatusCount(chat, status);
+        return ChatCountResponse.builder()
+                .online(mapper.getStatusCount(chat, "ONLINE"))
+                .offline(mapper.getStatusCount(chat, "OFFLINE"))
+                .members(chat.getUsers().size())
+                .build();
     }
 }
