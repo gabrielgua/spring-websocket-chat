@@ -19,4 +19,8 @@ public class AuthUtils {
     public String getAuthenticatedUsername() {
         return getAuth().getName();
     }
+
+    public boolean isAuthenticatedUser(String username) {
+        return username.equals(getAuthenticatedUsername());
+    }
 }

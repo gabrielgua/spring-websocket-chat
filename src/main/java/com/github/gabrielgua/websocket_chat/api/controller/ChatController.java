@@ -5,7 +5,9 @@ import com.github.gabrielgua.websocket_chat.api.mapper.UserMapper;
 import com.github.gabrielgua.websocket_chat.api.model.ChatCountResponse;
 import com.github.gabrielgua.websocket_chat.api.model.ChatResponse;
 import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
+import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
 import com.github.gabrielgua.websocket_chat.domain.service.ChatService;
+import com.github.gabrielgua.websocket_chat.domain.service.UserService;
 import com.github.gabrielgua.websocket_chat.infra.specs.ChatSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +22,13 @@ public class ChatController {
     private final ChatMapper mapper;
     private final ChatService service;
     private final UserMapper userMapper;
+    private final UserService userService;
+    private final AuthUtils authUtils;
 
     @GetMapping
-    public List<ChatResponse> listAll(ChatSpecification filter) {
-        return mapper.toCollectionResponse(service.findAll(filter));
+    public List<ChatResponse> listAllByUser() {
+        var user = userService.findByUsername(authUtils.getAuthenticatedUsername());
+        return mapper.toCollectionResponse(service.findAllByUser(user));
     }
 
     @GetMapping("/{chatId}/users")
