@@ -3,22 +3,19 @@ package com.github.gabrielgua.websocket_chat.web.controller;
 import com.github.gabrielgua.websocket_chat.api.mapper.MessageMapper;
 import com.github.gabrielgua.websocket_chat.api.model.MessageRequest;
 import com.github.gabrielgua.websocket_chat.api.model.MessageResponse;
-import com.github.gabrielgua.websocket_chat.domain.model.Message;
 import com.github.gabrielgua.websocket_chat.domain.service.ChatService;
 import com.github.gabrielgua.websocket_chat.domain.service.MessageService;
+import com.github.gabrielgua.websocket_chat.domain.service.NotificationService;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 
 @RestController
@@ -30,6 +27,7 @@ public class WebChatController {
     private final ChatService chatService;
     private final UserService userService;
     private final MessageMapper mapper;
+    private final NotificationService notificationService;
 
     @MessageMapping("/chats/{chatId}.sendMessage")
     public void processMessage(@DestinationVariable String chatId, @Payload MessageRequest request) {
@@ -38,6 +36,11 @@ public class WebChatController {
 
         var message = mapper.toEntity(request, sender, chat);
         var response = mapper.toResponse(messageService.save(message));
+
+//        var notification = notificationService.findById(chat, sender);
+//        notificationService.addCount(notification);
+
+
         messagingTemplate.convertAndSend("/topic/chats/" + chatId, response);
     }
 

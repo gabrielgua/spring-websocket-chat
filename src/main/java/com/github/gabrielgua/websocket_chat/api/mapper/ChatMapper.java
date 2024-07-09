@@ -1,5 +1,6 @@
 package com.github.gabrielgua.websocket_chat.api.mapper;
 
+import com.github.gabrielgua.websocket_chat.api.model.ChatCountResponse;
 import com.github.gabrielgua.websocket_chat.api.model.ChatResponse;
 import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
 import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
@@ -34,7 +35,7 @@ public class ChatMapper {
                 .statusCount(statusCount)
                 .lastMessage(lastMessage);
 
-        if (chat.getType().equals(ChatType.PRIVATE)) {
+        if (chat.isPrivate()) {
             var receiver = getReceiver(chat);
 
             receiver.ifPresent(user -> {
@@ -44,6 +45,24 @@ public class ChatMapper {
         }
 
         return responseBuilder.build();
+    }
+
+    public ChatResponse toResponseCompact(Chat chat) {
+        var statusCount = createChatResponseStatusCount(chat);
+
+        var response = ChatResponse.builder()
+                .id(chat.getId().toString())
+                .statusCount(statusCount);
+
+        if (chat.isPrivate()) {
+            var receiver = getReceiver(chat);
+
+            receiver.ifPresent(user -> {
+                response.receiver(userMapper.toResponse(receiver.get()));
+            });
+        }
+
+        return response.build();
     }
 
     public List<ChatResponse> toCollectionResponse(List<Chat> chats) {
@@ -69,8 +88,8 @@ public class ChatMapper {
                 .findFirst();
     }
 
-    public ChatResponse.ChatResponseStatusCount createChatResponseStatusCount(Chat chat) {
-        return ChatResponse.ChatResponseStatusCount.builder()
+    public ChatCountResponse createChatResponseStatusCount(Chat chat) {
+        return ChatCountResponse.builder()
                 .online(getStatusCount(chat, "ONLINE"))
                 .offline(getStatusCount(chat, "OFFLINE"))
                 .members(chat.getUsers().size())

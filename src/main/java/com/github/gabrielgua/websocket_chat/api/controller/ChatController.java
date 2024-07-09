@@ -6,6 +6,7 @@ import com.github.gabrielgua.websocket_chat.api.model.ChatCountResponse;
 import com.github.gabrielgua.websocket_chat.api.model.ChatResponse;
 import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
 import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
+import com.github.gabrielgua.websocket_chat.domain.model.ChatType;
 import com.github.gabrielgua.websocket_chat.domain.service.ChatService;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
 import com.github.gabrielgua.websocket_chat.infra.specs.ChatSpecification;
@@ -37,13 +38,8 @@ public class ChatController {
         return userMapper.toCollectionResponse(chat.getUsers().stream().toList());
     }
 
-    @GetMapping("/{chatId}/users/count")
-    public ChatCountResponse countChatUsersWithStatus(@PathVariable String chatId) {
-        var chat = service.findById(chatId);
-        return ChatCountResponse.builder()
-                .online(mapper.getStatusCount(chat, "ONLINE"))
-                .offline(mapper.getStatusCount(chat, "OFFLINE"))
-                .members(chat.getUsers().size())
-                .build();
+    @GetMapping("/{chatId}/users/status")
+    public ChatResponse countChatUsersWithStatus(@PathVariable String chatId) {
+        return mapper.toResponseCompact(service.findById(chatId));
     }
 }

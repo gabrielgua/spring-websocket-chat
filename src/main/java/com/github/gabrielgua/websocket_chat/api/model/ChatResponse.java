@@ -19,17 +19,7 @@ public class ChatResponse {
     private String name;
     private ChatType type;
     private OffsetDateTime createdAt;
-    private ChatResponseStatusCount statusCount;
+    private ChatCountResponse statusCount;
     private UserResponse receiver;
     private MessageResponse lastMessage;
-
-
-    @Getter
-    @Setter
-    @Builder
-    public static class ChatResponseStatusCount {
-        private long online;
-        private long offline;
-        private long members;
-    }
 }

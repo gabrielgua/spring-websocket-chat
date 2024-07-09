@@ -48,4 +48,12 @@ public class Chat {
 
     @OneToMany(mappedBy = "chat")
     private List<Message> messages;
+
+    public boolean isPrivate() {
+        return this.type == ChatType.PRIVATE;
+    }
+
+    public boolean isGroup() {
+        return this.type == ChatType.GROUP;
+    }
 }
