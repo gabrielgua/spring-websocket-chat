@@ -35,7 +35,7 @@ public class Chat {
     @Column(name = "created_at")
     private OffsetDateTime createdAt;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "chats_users",
             joinColumns = @JoinColumn(name = "chat_id"),

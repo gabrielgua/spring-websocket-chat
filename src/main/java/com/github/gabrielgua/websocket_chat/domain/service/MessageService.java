@@ -23,9 +23,14 @@ public class MessageService {
         return repository.findAllByChat(chat);
     }
 
+    @Transactional(readOnly = true)
+    public Message findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+    }
 
     @Transactional
     public Message save(Message message) {
         return repository.save(message);
     }
+
 }

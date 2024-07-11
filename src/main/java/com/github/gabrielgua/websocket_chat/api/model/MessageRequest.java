@@ -9,6 +9,7 @@ import java.util.UUID;
 @Setter
 public class MessageRequest {
 
+    private Long senderId;
     private String chatId;
     private String content;
 }

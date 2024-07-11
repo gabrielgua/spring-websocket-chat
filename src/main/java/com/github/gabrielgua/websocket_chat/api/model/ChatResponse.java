@@ -22,5 +22,4 @@ public class ChatResponse {
     private ChatCountResponse statusCount;
     private UserResponse receiver;
     private MessageResponse lastMessage;
-    private long notifications;
 }

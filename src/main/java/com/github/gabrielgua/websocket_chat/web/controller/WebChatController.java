@@ -3,9 +3,9 @@ package com.github.gabrielgua.websocket_chat.web.controller;
 import com.github.gabrielgua.websocket_chat.api.mapper.MessageMapper;
 import com.github.gabrielgua.websocket_chat.api.model.MessageRequest;
 import com.github.gabrielgua.websocket_chat.api.model.MessageResponse;
-import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
 import com.github.gabrielgua.websocket_chat.domain.service.ChatService;
 import com.github.gabrielgua.websocket_chat.domain.service.MessageService;
+import com.github.gabrielgua.websocket_chat.domain.service.UserMessageService;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -25,16 +25,21 @@ public class WebChatController {
     private final SimpMessagingTemplate messagingTemplate;
     private final MessageService messageService;
     private final ChatService chatService;
-    private final AuthUtils authUtils;
+    private final UserService userService;
     private final MessageMapper mapper;
+    private final UserMessageService userMessageService;
 
     @MessageMapping("/chats/{chatId}.sendMessage")
     public void processMessage(@DestinationVariable String chatId, @Payload MessageRequest request) {
         var chat = chatService.findById(request.getChatId());
-        var sender = authUtils.getAuthenticatedUser();
 
-        var message = mapper.toEntity(request, sender, chat);
-        var response = mapper.toResponse(messageService.save(message));
+
+
+        var sender = userService.findById(request.getSenderId());
+        var message = messageService.save(mapper.toEntity(request, sender, chat));
+        userMessageService.addUnreadToOffline(chat, message);
+
+        var response = mapper.toResponse(message);
 
         messagingTemplate.convertAndSend("/topic/chats/" + chatId, response);
     }

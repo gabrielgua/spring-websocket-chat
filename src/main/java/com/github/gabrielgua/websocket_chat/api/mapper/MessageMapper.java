@@ -2,20 +2,34 @@ package com.github.gabrielgua.websocket_chat.api.mapper;
 
 import com.github.gabrielgua.websocket_chat.api.model.MessageRequest;
 import com.github.gabrielgua.websocket_chat.api.model.MessageResponse;
+import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
 import com.github.gabrielgua.websocket_chat.domain.model.Chat;
 import com.github.gabrielgua.websocket_chat.domain.model.Message;
 import com.github.gabrielgua.websocket_chat.domain.model.User;
+import com.github.gabrielgua.websocket_chat.domain.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class MessageMapper {
+
 
     public MessageResponse toResponse(Message message) {
         return MessageResponse.builder()
                 .id(message.getId())
                 .chat(message.getChat().getId().toString())
+                .sender(message.getUser().getUsername())
+                .content(message.getContent())
+                .timestamp(message.getTimestamp())
+                .build();
+    }
+
+
+    public MessageResponse toCompactResponse(Message message) {
+        return MessageResponse.builder()
                 .sender(message.getUser().getUsername())
                 .content(message.getContent())
                 .timestamp(message.getTimestamp())

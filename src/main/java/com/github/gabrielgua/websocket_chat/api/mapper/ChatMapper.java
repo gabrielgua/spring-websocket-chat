@@ -2,6 +2,7 @@ package com.github.gabrielgua.websocket_chat.api.mapper;
 
 import com.github.gabrielgua.websocket_chat.api.model.ChatCountResponse;
 import com.github.gabrielgua.websocket_chat.api.model.ChatResponse;
+import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
 import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
 import com.github.gabrielgua.websocket_chat.domain.model.Chat;
 import com.github.gabrielgua.websocket_chat.domain.model.ChatType;
@@ -22,28 +23,30 @@ public class ChatMapper {
     private final AuthUtils authUtils;
 
     public ChatResponse toResponse(Chat chat) {
-
-        var lastMessage = messageMapper.toResponse(chat.getMessages().getLast());
+        var lastMessage = messageMapper.toCompactResponse(chat.getMessages().getLast());
         var statusCount = createChatResponseStatusCount(chat);
+        var chatName = chat.getName();
+        UserResponse receiver = null;
 
-        var responseBuilder = ChatResponse.builder()
-                .id(chat.getId().toString())
-                .name(chat.getName())
-                .type(chat.getType())
-                .createdAt(chat.getCreatedAt())
-                .statusCount(statusCount)
-                .lastMessage(lastMessage);
 
         if (chat.isPrivate()) {
-            var receiver = getReceiver(chat);
-
-            receiver.ifPresent(user -> {
-                responseBuilder.receiver(userMapper.toResponse(user));
-                responseBuilder.name(user.getUsername());
-            });
+            var user = getReceiver(chat);
+            if (user.isPresent()) {
+                chatName = user.get().getUsername();
+                receiver = userMapper.toResponse(user.get());
+                statusCount = null;
+            }
         }
 
-        return responseBuilder.build();
+        return ChatResponse.builder()
+                .id(chat.getId().toString())
+                .name(chatName)
+                .type(chat.getType())
+                .createdAt(chat.getCreatedAt())
+                .lastMessage(lastMessage)
+                .receiver(receiver)
+                .statusCount(statusCount)
+                .build();
     }
 
     public ChatResponse toResponseStatus(Chat chat) {
