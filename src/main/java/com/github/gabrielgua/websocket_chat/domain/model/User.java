@@ -25,6 +25,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+
+
     public boolean isNew() {
         return this.id == null;
     }

@@ -2,7 +2,6 @@ package com.github.gabrielgua.websocket_chat.api.mapper;
 
 import com.github.gabrielgua.websocket_chat.api.model.ChatCountResponse;
 import com.github.gabrielgua.websocket_chat.api.model.ChatResponse;
-import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
 import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
 import com.github.gabrielgua.websocket_chat.domain.model.Chat;
 import com.github.gabrielgua.websocket_chat.domain.model.ChatType;
@@ -39,15 +38,15 @@ public class ChatMapper {
             var receiver = getReceiver(chat);
 
             receiver.ifPresent(user -> {
-                responseBuilder.receiver(userMapper.toResponse(receiver.get()));
-                responseBuilder.name(receiver.get().getUsername());
+                responseBuilder.receiver(userMapper.toResponse(user));
+                responseBuilder.name(user.getUsername());
             });
         }
 
         return responseBuilder.build();
     }
 
-    public ChatResponse toResponseCompact(Chat chat) {
+    public ChatResponse toResponseStatus(Chat chat) {
         var statusCount = createChatResponseStatusCount(chat);
 
         var response = ChatResponse.builder()
@@ -95,4 +94,5 @@ public class ChatMapper {
                 .members(chat.getUsers().size())
                 .build();
     }
+
 }

@@ -2,14 +2,10 @@ package com.github.gabrielgua.websocket_chat.api.controller;
 
 import com.github.gabrielgua.websocket_chat.api.mapper.ChatMapper;
 import com.github.gabrielgua.websocket_chat.api.mapper.UserMapper;
-import com.github.gabrielgua.websocket_chat.api.model.ChatCountResponse;
 import com.github.gabrielgua.websocket_chat.api.model.ChatResponse;
 import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
 import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
-import com.github.gabrielgua.websocket_chat.domain.model.ChatType;
 import com.github.gabrielgua.websocket_chat.domain.service.ChatService;
-import com.github.gabrielgua.websocket_chat.domain.service.UserService;
-import com.github.gabrielgua.websocket_chat.infra.specs.ChatSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +19,11 @@ public class ChatController {
     private final ChatMapper mapper;
     private final ChatService service;
     private final UserMapper userMapper;
-    private final UserService userService;
     private final AuthUtils authUtils;
 
     @GetMapping
     public List<ChatResponse> listAllByUser() {
-        var user = userService.findByUsername(authUtils.getAuthenticatedUsername());
+        var user = authUtils.getAuthenticatedUser();
         return mapper.toCollectionResponse(service.findAllByUser(user));
     }
 
@@ -40,6 +35,7 @@ public class ChatController {
 
     @GetMapping("/{chatId}/users/status")
     public ChatResponse countChatUsersWithStatus(@PathVariable String chatId) {
-        return mapper.toResponseCompact(service.findById(chatId));
+        return mapper.toResponseStatus(service.findById(chatId));
     }
+
 }

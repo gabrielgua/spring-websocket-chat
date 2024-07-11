@@ -5,7 +5,6 @@ import com.github.gabrielgua.websocket_chat.api.model.MessageRequest;
 import com.github.gabrielgua.websocket_chat.api.model.MessageResponse;
 import com.github.gabrielgua.websocket_chat.domain.service.ChatService;
 import com.github.gabrielgua.websocket_chat.domain.service.MessageService;
-import com.github.gabrielgua.websocket_chat.domain.service.NotificationService;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -27,7 +26,6 @@ public class WebChatController {
     private final ChatService chatService;
     private final UserService userService;
     private final MessageMapper mapper;
-    private final NotificationService notificationService;
 
     @MessageMapping("/chats/{chatId}.sendMessage")
     public void processMessage(@DestinationVariable String chatId, @Payload MessageRequest request) {
@@ -36,10 +34,6 @@ public class WebChatController {
 
         var message = mapper.toEntity(request, sender, chat);
         var response = mapper.toResponse(messageService.save(message));
-
-//        var notification = notificationService.findById(chat, sender);
-//        notificationService.addCount(notification);
-
 
         messagingTemplate.convertAndSend("/topic/chats/" + chatId, response);
     }

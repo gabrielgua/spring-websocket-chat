@@ -1,5 +1,6 @@
 package com.github.gabrielgua.websocket_chat.api.security;
 
+import com.github.gabrielgua.websocket_chat.domain.model.User;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -16,11 +17,15 @@ public class AuthUtils {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    public String getAuthenticatedUsername() {
+    private String getAuthenticatedUsername() {
         return getAuth().getName();
     }
 
     public boolean isAuthenticatedUser(String username) {
         return username.equals(getAuthenticatedUsername());
+    }
+
+    public User getAuthenticatedUser() {
+        return userService.findByUsername(getAuthenticatedUsername());
     }
 }
