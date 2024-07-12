@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -57,10 +58,10 @@ public class ChatMapper {
                 .statusCount(statusCount);
 
         if (chat.isPrivate()) {
-            var receiver = getReceiver(chat);
 
-            receiver.ifPresent(user -> {
-                response.receiver(userMapper.toResponse(receiver.get()));
+            getReceiver(chat).ifPresent(user -> {
+                response.receiver(userMapper.toResponse(user));
+                response.statusCount(null);
             });
         }
 
@@ -70,6 +71,12 @@ public class ChatMapper {
     public List<ChatResponse> toCollectionResponse(List<Chat> chats) {
         return chats.stream()
                 .map(this::toResponse)
+                .toList();
+    }
+
+    public List<ChatResponse> toCollectionResponseStatus(List<Chat> chats) {
+        return chats.stream()
+                .map(this::toResponseStatus)
                 .toList();
     }
 
