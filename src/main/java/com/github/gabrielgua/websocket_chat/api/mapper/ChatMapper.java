@@ -26,28 +26,23 @@ public class ChatMapper {
     public ChatResponse toResponse(Chat chat) {
         var lastMessage = messageMapper.toCompactResponse(chat.getMessages().getLast());
         var statusCount = createChatResponseStatusCount(chat);
-        var chatName = chat.getName();
-        UserResponse receiver = null;
 
-
-        if (chat.isPrivate()) {
-            var user = getReceiver(chat);
-            if (user.isPresent()) {
-                chatName = user.get().getUsername();
-                receiver = userMapper.toResponse(user.get());
-                statusCount = null;
-            }
-        }
-
-        return ChatResponse.builder()
+        var response = ChatResponse.builder()
                 .id(chat.getId().toString())
-                .name(chatName)
+                .name(chat.getName())
                 .type(chat.getType())
                 .createdAt(chat.getCreatedAt())
                 .lastMessage(lastMessage)
-                .receiver(receiver)
-                .statusCount(statusCount)
-                .build();
+                .statusCount(statusCount);
+
+
+        getReceiver(chat).ifPresent(user -> {
+            response.name(user.getUsername())
+                    .receiver(userMapper.toResponse(user))
+                    .statusCount(null);
+        });
+
+        return response.build();
     }
 
     public ChatResponse toResponseStatus(Chat chat) {
@@ -57,13 +52,11 @@ public class ChatMapper {
                 .id(chat.getId().toString())
                 .statusCount(statusCount);
 
-        if (chat.isPrivate()) {
 
-            getReceiver(chat).ifPresent(user -> {
-                response.receiver(userMapper.toResponse(user));
-                response.statusCount(null);
-            });
-        }
+        getReceiver(chat).ifPresent(user -> {
+            response.receiver(userMapper.toResponse(user))
+                    .statusCount(null);
+        });
 
         return response.build();
     }
