@@ -9,10 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,14 +31,12 @@ public class ConnectionController {
     @MessageMapping("/user.connectUser")
     @SendTo("/topic/notifications")
     public UserResponse connect(@Payload UserConnectionRequest request) {
-        var user = service.findById(request.getId());
-        return mapper.toResponse(service.connect(user));
+        return mapper.toResponse(service.connect(service.findById(request.getId())));
     }
 
     @MessageMapping("/user.disconnectUser")
     @SendTo("/topic/notifications")
     public UserResponse disconnect(@Payload UserConnectionRequest request) {
-        var user = service.findById(request.getId());
-        return mapper.toResponse(service.disconnect(user));
+        return mapper.toResponse(service.disconnect(service.findById(request.getId())));
     }
 }

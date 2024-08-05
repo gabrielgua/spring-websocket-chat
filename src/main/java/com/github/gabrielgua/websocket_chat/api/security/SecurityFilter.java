@@ -1,6 +1,7 @@
 package com.github.gabrielgua.websocket_chat.api.security;
 
 import com.github.gabrielgua.websocket_chat.api.security.TokenService;
+import com.github.gabrielgua.websocket_chat.domain.model.UserStatus;
 import com.github.gabrielgua.websocket_chat.domain.repository.UserRepository;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
 import jakarta.servlet.FilterChain;
