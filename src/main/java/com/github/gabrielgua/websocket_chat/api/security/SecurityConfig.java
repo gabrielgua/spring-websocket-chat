@@ -27,7 +27,7 @@ public class SecurityConfig {
 
     private final SecurityFilter securityFilter;
 
-    private final String[] PUBLIC_ROUTES = {"/auth/login", "/auth/register"};
+    private final String[] PUBLIC_ROUTES = {"/api/auth/login", "/api/auth/register"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

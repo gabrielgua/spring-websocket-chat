@@ -12,6 +12,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,18 +24,18 @@ public class ConnectionController {
     private final UserService service;
     private final UserMapper mapper;
 
-    @GetMapping("/users/connected")
+    @GetMapping("/api/users/connected")
     public List<User> listConnectedUsers() {
         return service.findAllConnected();
     }
 
-    @MessageMapping("/user.connectUser")
+    @MessageMapping("user.connectUser")
     @SendTo("/topic/notifications")
     public UserResponse connect(@Payload UserConnectionRequest request) {
         return mapper.toResponse(service.connect(service.findById(request.getId())));
     }
 
-    @MessageMapping("/user.disconnectUser")
+    @MessageMapping("user.disconnectUser")
     @SendTo("/topic/notifications")
     public UserResponse disconnect(@Payload UserConnectionRequest request) {
         return mapper.toResponse(service.disconnect(service.findById(request.getId())));

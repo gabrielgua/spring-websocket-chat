@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/chats")
+@RequestMapping("/api/chats")
 public class ChatController {
 
     private final ChatMapper mapper;

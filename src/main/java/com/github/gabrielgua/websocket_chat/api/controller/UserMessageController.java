@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users/messages")
+@RequestMapping("/api/users/messages")
 public class UserMessageController {
 
     private final AuthUtils authUtils;

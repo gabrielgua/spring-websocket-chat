@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final AuthService authService;
@@ -26,7 +26,7 @@ public class AuthController {
     public AuthResponse login(@RequestBody AuthRequest request) {
         return authService.authenticate(request);
     }
-
+    
     @PostMapping("/register")
     public AuthResponse register(@RequestBody @Valid UserRequest request) {
         var user = userMapper.toEntity(request);

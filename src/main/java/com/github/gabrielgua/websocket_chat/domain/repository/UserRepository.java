@@ -1,6 +1,5 @@
 package com.github.gabrielgua.websocket_chat.domain.repository;
 
-import com.github.gabrielgua.websocket_chat.domain.model.Chat;
 import com.github.gabrielgua.websocket_chat.domain.model.UserStatus;
 import com.github.gabrielgua.websocket_chat.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
 
+    List<User> findByUsernameOrNameContainingIgnoreCase(String username, String name);
+
     boolean existsByUsername(String username);
 
-    Optional<User> findByUsernameAndPassword(String username, String password);
 }

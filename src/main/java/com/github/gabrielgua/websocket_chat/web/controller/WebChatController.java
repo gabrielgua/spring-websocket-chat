@@ -14,12 +14,14 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/web")
 public class WebChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
@@ -45,7 +47,7 @@ public class WebChatController {
     }
 
     @GetMapping("/chats/{chatId}/messages")
-    public List<MessageResponse> findAllByChat(@PathVariable String chatId) {
+    public List<MessageResponse> findAllMessagesByChat(@PathVariable String chatId) {
         var chat = chatService.findById(chatId);
         return mapper.toCollectionResponse(messageService.findAllByChat(chat));
     }
