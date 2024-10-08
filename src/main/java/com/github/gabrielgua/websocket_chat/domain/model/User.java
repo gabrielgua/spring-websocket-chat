@@ -38,6 +38,23 @@ public class User {
     private Set<Message> unread = new HashSet<>();
 
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "users_friends",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id")
+    )
+    private Set<User> friends = new HashSet<>();
+
+
+    public void addFriend(User user) {
+        this.friends.add(user);
+    }
+
+    public void removeFriend(User user) {
+        this.friends.remove(user);
+    }
+
     public void addUnread(Message message) {
         this.unread.add(message);
     }
