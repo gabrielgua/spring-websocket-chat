@@ -26,7 +26,8 @@ public class ChatController {
     @GetMapping
     public List<ChatResponse> listAllByUser() {
         var user = authUtils.getAuthenticatedUser();
-        return mapper.toCollectionResponse(chatService.findAllByUser(user));
+        var chats = chatService.findAllByUser(user);
+        return mapper.toCollectionResponse(chats);
     }
 
     @GetMapping("/{chatId}/users")

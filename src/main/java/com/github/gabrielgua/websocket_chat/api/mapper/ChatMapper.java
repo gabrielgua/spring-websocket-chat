@@ -2,12 +2,10 @@ package com.github.gabrielgua.websocket_chat.api.mapper;
 
 import com.github.gabrielgua.websocket_chat.api.model.ChatCountResponse;
 import com.github.gabrielgua.websocket_chat.api.model.ChatResponse;
+import com.github.gabrielgua.websocket_chat.api.model.MessageResponse;
 import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
 import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
-import com.github.gabrielgua.websocket_chat.domain.model.Chat;
-import com.github.gabrielgua.websocket_chat.domain.model.ChatType;
-import com.github.gabrielgua.websocket_chat.domain.model.User;
-import com.github.gabrielgua.websocket_chat.domain.model.UserStatus;
+import com.github.gabrielgua.websocket_chat.domain.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +22,7 @@ public class ChatMapper {
     private final AuthUtils authUtils;
 
     public ChatResponse toResponse(Chat chat) {
-        var lastMessage = messageMapper.toCompactResponse(chat.getMessages().getLast());
+        var lastMessage = getLastMessage(chat);
         var statusCount = createChatResponseStatusCount(chat);
 
         var response = ChatResponse.builder()
@@ -96,6 +94,14 @@ public class ChatMapper {
                 .offline(getStatusCount(chat, "OFFLINE"))
                 .members(chat.getUsers().size())
                 .build();
+    }
+
+    private MessageResponse getLastMessage(Chat chat) {
+        if (chat.getMessages().isEmpty()) {
+            return MessageResponse.builder().build();
+        }
+
+        return messageMapper.toCompactResponse(chat.getMessages().getLast());
     }
 
 }

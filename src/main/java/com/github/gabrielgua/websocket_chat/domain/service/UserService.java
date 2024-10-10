@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,8 @@ public class UserService {
 
     private final UserRepository repository;
     private final PasswordEncoder encoder;
+
+    private static final String AVATAR_URL = "https://api.dicebear.com/9.x/bottts-neutral/svg?radius=50";
 
     @Transactional(readOnly = true)
     public List<User> findAllConnected() {
@@ -37,20 +40,18 @@ public class UserService {
         return repository.findByUsername(username).orElseThrow(() -> new RuntimeException("Username not found"));
     }
 
-    @Transactional(readOnly = true)
-    public boolean existsByUsername(String username) {
-        return repository.existsByUsername(username);
-    }
-
     @Transactional
     public User save(User user) {
         if (user.isNew()) {
             user.setStatus(UserStatus.OFFLINE);
             user.setPassword(encoder.encode(user.getPassword()));
+            user.setAvatarUrl(String.format("%s&seed=%s", AVATAR_URL, user.getUsername() + UUID.randomUUID()));
         }
 
         return repository.save(user);
     }
+
+
 
     @Transactional
     public User connect(User user) {

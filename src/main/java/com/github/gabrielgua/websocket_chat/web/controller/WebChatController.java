@@ -21,7 +21,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/web")
 public class WebChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
@@ -46,7 +45,7 @@ public class WebChatController {
         messagingTemplate.convertAndSend("/topic/chats/" + chatId, response);
     }
 
-    @GetMapping("/chats/{chatId}/messages")
+    @GetMapping("/web/chats/{chatId}/messages")
     public List<MessageResponse> findAllMessagesByChat(@PathVariable String chatId) {
         var chat = chatService.findById(chatId);
         return mapper.toCollectionResponse(messageService.findAllByChat(chat));

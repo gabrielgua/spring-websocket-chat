@@ -24,7 +24,7 @@ public class ChatService {
 
     @Transactional(readOnly = true)
     public List<Chat> findAllByUser(User user) {
-        return repository.findAllByUsersContaining(user);
+        return repository.findByUsersContaining(user);
     }
 
     @Transactional(readOnly = true)

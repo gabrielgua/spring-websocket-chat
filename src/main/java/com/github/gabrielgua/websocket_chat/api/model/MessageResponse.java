@@ -15,7 +15,7 @@ public class MessageResponse {
 
     private Long id;
     private String chat;
-    private String sender;
+    private UserResponse sender;
     private String content;
     private OffsetDateTime timestamp;
 }

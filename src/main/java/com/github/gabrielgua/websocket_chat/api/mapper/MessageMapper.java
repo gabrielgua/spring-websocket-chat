@@ -16,12 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageMapper {
 
+    private final UserMapper userMapper;
 
     public MessageResponse toResponse(Message message) {
         return MessageResponse.builder()
                 .id(message.getId())
                 .chat(message.getChat().getId().toString())
-                .sender(message.getUser().getUsername())
+                .sender(userMapper.toResponse(message.getUser()))
                 .content(message.getContent())
                 .timestamp(message.getTimestamp())
                 .build();
@@ -30,7 +31,7 @@ public class MessageMapper {
 
     public MessageResponse toCompactResponse(Message message) {
         return MessageResponse.builder()
-                .sender(message.getUser().getUsername())
+                .sender(userMapper.toResponse(message.getUser()))
                 .content(message.getContent())
                 .timestamp(message.getTimestamp())
                 .build();

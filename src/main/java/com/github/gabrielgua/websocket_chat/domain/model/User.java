@@ -1,5 +1,6 @@
 package com.github.gabrielgua.websocket_chat.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,8 @@ public class User {
     private String username;
     private String password;
 
+    private String avatarUrl;
+
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
@@ -36,7 +39,6 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "message_id")
     )
     private Set<Message> unread = new HashSet<>();
-
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -70,5 +72,6 @@ public class User {
     public boolean isNew() {
         return this.id == null;
     }
+
 
 }

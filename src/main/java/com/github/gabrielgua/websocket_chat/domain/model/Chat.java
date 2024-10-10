@@ -11,13 +11,11 @@ import org.hibernate.usertype.UserTypeSupport;
 
 import java.sql.Types;
 import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "chats")
@@ -47,7 +45,7 @@ public class Chat {
     private ChatType type;
 
     @OneToMany(mappedBy = "chat")
-    private List<Message> messages;
+    private List<Message> messages = new ArrayList<>();
 
     public boolean isPrivate() {
         return this.type == ChatType.PRIVATE;
