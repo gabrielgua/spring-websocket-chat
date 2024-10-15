@@ -20,22 +20,21 @@ public class AuthService {
 
     public AuthResponse authenticate(AuthRequest request) {
         var user = userService.findByUsername(request.getUsername());
-
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         var token = tokenService.generateToken(user);
-        return AuthResponse.builder()
-                .userId(user.getId())
-                .username(user.getUsername())
-                .token(token)
-                .build();
+        return toResponse(user, token);
     }
     public AuthResponse register(User user) {
         var token = tokenService.generateToken(user);
+        return toResponse(user, token);
+    }
 
+    public AuthResponse toResponse(User user, String token) {
         return AuthResponse.builder()
                 .token(token)
                 .userId(user.getId())
+                .avatarUrl(user.getAvatarUrl())
                 .username(user.getUsername())
                 .build();
     }

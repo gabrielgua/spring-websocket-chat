@@ -29,6 +29,11 @@ public class Chat {
 
     private String name;
 
+    private String description;
+
+    @OneToOne
+    private User creator;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private OffsetDateTime createdAt;

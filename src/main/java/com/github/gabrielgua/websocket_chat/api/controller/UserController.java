@@ -2,6 +2,8 @@ package com.github.gabrielgua.websocket_chat.api.controller;
 
 import com.github.gabrielgua.websocket_chat.api.mapper.UserMapper;
 import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
+import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
+import com.github.gabrielgua.websocket_chat.domain.model.User;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
@@ -19,9 +21,11 @@ public class UserController {
 
     private final UserService service;
     private final UserMapper mapper;
+    private final AuthUtils auth;
 
     @GetMapping()
     public List<UserResponse> searchByNameOrUsername(@Param("term") String term) {
         return mapper.toCollectionResponse(service.findByUsernameOrNameContaining(term));
     }
+
 }

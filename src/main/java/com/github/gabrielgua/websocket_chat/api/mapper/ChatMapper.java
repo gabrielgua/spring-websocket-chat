@@ -1,16 +1,13 @@
 package com.github.gabrielgua.websocket_chat.api.mapper;
 
-import com.github.gabrielgua.websocket_chat.api.model.ChatCountResponse;
-import com.github.gabrielgua.websocket_chat.api.model.ChatResponse;
-import com.github.gabrielgua.websocket_chat.api.model.MessageResponse;
-import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
+import com.github.gabrielgua.websocket_chat.api.model.*;
 import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
 import com.github.gabrielgua.websocket_chat.domain.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.OffsetDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,10 +25,12 @@ public class ChatMapper {
         var response = ChatResponse.builder()
                 .id(chat.getId().toString())
                 .name(chat.getName())
+                .description(chat.getDescription())
                 .type(chat.getType())
                 .createdAt(chat.getCreatedAt())
                 .lastMessage(lastMessage)
-                .statusCount(statusCount);
+                .statusCount(statusCount)
+                .creator(userMapper.toResponse(chat.getCreator()));
 
 
         getReceiver(chat).ifPresent(user -> {
@@ -102,6 +101,20 @@ public class ChatMapper {
         }
 
         return messageMapper.toCompactResponse(chat.getMessages().getLast());
+    }
+
+    public Chat toEntity(ChatRequest request, List<User> users, User creator) {
+        var chat = new Chat();
+
+        chat.setId(UUID.randomUUID());
+        chat.setCreator(creator);
+        chat.setType(request.getType());
+        chat.setName(request.getName());
+        chat.setDescription(request.getDescription());
+        chat.setUsers(new HashSet<>(users));
+        chat.setCreatedAt(OffsetDateTime.now());
+
+        return chat;
     }
 
 }

@@ -11,5 +11,7 @@ public class AuthResponse {
 
     private Long userId;
     private String username;
+    private String avatarUrl;
     private String token;
+
 }

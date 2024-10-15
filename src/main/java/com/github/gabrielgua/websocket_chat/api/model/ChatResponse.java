@@ -17,9 +17,11 @@ import java.time.OffsetDateTime;
 public class ChatResponse {
     private String id;
     private String name;
+    private String description;
     private ChatType type;
     private OffsetDateTime createdAt;
-    private ChatCountResponse statusCount;
     private UserResponse receiver;
+    private UserResponse creator;
+    private ChatCountResponse statusCount;
     private MessageResponse lastMessage;
 }
