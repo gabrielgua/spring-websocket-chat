@@ -52,7 +52,7 @@ public class ChatController {
     }
 
     @PostMapping
-    public ChatResponse createNewGroup(@RequestBody ChatRequest request) {
+    public ChatResponse createNew(@RequestBody ChatRequest request) {
         List<User> users = request.getUsers().stream()
                 .map(userService::findById)
                 .toList();
