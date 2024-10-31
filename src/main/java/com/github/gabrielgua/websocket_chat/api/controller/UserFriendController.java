@@ -6,6 +6,7 @@ import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
 import com.github.gabrielgua.websocket_chat.domain.service.UserFriendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

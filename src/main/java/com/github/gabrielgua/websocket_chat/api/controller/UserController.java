@@ -21,7 +21,6 @@ public class UserController {
 
     private final UserService service;
     private final UserMapper mapper;
-    private final AuthUtils auth;
 
     @GetMapping()
     public List<UserResponse> searchByNameOrUsername(@Param("term") String term) {

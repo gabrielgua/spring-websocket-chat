@@ -18,7 +18,7 @@ public class UserService {
     private final UserRepository repository;
     private final PasswordEncoder encoder;
 
-    private static final String AVATAR_URL = "https://api.dicebear.com/9.x/bottts-neutral/svg?radius=50";
+    private static final String AVATAR_URL = "https://api.dicebear.com/9.x/thumbs/svg?radius=50";
 
     @Transactional(readOnly = true)
     public List<User> findAllConnected() {

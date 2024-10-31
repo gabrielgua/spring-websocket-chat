@@ -13,10 +13,10 @@ alter table users auto_increment = 1;
 alter table messages auto_increment = 1;
 
 insert into users (id, username, password, status, name, avatar_url) values
-(1, "opaco", "$2a$12$DbC9J4gvw/I9OdZVKRxTr.Fe3FjkMsdaQa.fjPkae1hFY56IXAdBK", "OFFLINE", "Opaco horacio", "https://api.dicebear.com/9.x/bottts-neutral/svg?radius=50&seed=opacobfac823d-91c6-4c22-a0ad-ab96704cca65"),
-(2, "gabrielgua", "$2a$12$9PjSs0gKed.jgBY58gcINe4YYrReCEecjgXf8ZUYq6wP2obDVhcIq", "OFFLINE", "Gabriel Guaitanele", "https://api.dicebear.com/9.x/bottts-neutral/svg?radius=50&seed=gabrielgua64a784d1-b204-4f6e-934c-4aee18fbca2d"),
-(3, "usuario", "$2a$12$kY3O3n3Hi5o5ZmBvg2o4bOlksj7rjS1hlZGnzsGkZFjkySxtQvJsa", "OFFLINE", "Usuário da Silva Sauro Dinossauro", "https://api.dicebear.com/9.x/bottts-neutral/svg?radius=50&seed=usuario079add12-53a0-4fa2-8597-d1a6a25e4f84"),
-(4, "guaitanele.gamer", "$2a$10$tYTxZX1qaliXQw1pJsIKD.92ryHD6CuD6l39IAFzP4G8Qk1w5/r7C", "OFFLINE", "Guaitanele Niszczak Gabriel", "https://api.dicebear.com/9.x/bottts-neutral/svg?radius=50&seed=guaitanele.gamer7cdd70f7-0aa6-4324-9954-996f32fc9487");
+(1, "opaco", "$2a$12$DbC9J4gvw/I9OdZVKRxTr.Fe3FjkMsdaQa.fjPkae1hFY56IXAdBK", "OFFLINE", "Opaco horacio", "https://api.dicebear.com/9.x/thumbs/svg?radius=50&seed=opacobfac823d-91c6-4c22-a0ad-ab96704cca65"),
+(2, "gabrielgua", "$2a$12$9PjSs0gKed.jgBY58gcINe4YYrReCEecjgXf8ZUYq6wP2obDVhcIq", "OFFLINE", "Gabriel Guaitanele", "https://api.dicebear.com/9.x/thumbs/svg?radius=50&seed=gabrielgua64a784d1-b204-4f6e-934c-4aee18fbca2d"),
+(3, "usuario", "$2a$12$kY3O3n3Hi5o5ZmBvg2o4bOlksj7rjS1hlZGnzsGkZFjkySxtQvJsa", "OFFLINE", "Usuário da Silva Sauro Dinossauro", "https://api.dicebear.com/9.x/thumbs/svg?radius=50&seed=usuario079add12-53a0-4fa2-8597-d1a6a25e4f84"),
+(4, "guaitanele.gamer", "$2a$10$tYTxZX1qaliXQw1pJsIKD.92ryHD6CuD6l39IAFzP4G8Qk1w5/r7C", "OFFLINE", "Guaitanele Niszczak Gabriel", "https://api.dicebear.com/9.x/thumbs/svg?radius=50&seed=guaitanele.gamer7cdd70f7-0aa6-4324-9954-996f32fc9487");
 
 insert into users_friends (user_id, friend_id) values
 (1, 2), (1, 3),
