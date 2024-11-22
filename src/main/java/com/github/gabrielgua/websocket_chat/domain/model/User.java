@@ -54,6 +54,22 @@ public class User {
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
     private Set<FriendRequest> receivedRequests = new HashSet<>();
 
+    public void addSentRequest(FriendRequest request) {
+        sentRequests.add(request);
+    }
+
+    public void removeSentRequest(FriendRequest request) {
+        sentRequests.remove(request);
+    }
+
+    public void addReceivedRequest(FriendRequest request) {
+        receivedRequests.add(request);
+    }
+
+    public void removeReceivedRequest(FriendRequest request) {
+        receivedRequests.add(request);
+    }
+
     public void addFriend(User user) {
         this.friends.add(user);
     }
