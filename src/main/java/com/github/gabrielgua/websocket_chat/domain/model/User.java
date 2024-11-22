@@ -48,6 +48,11 @@ public class User {
     )
     private Set<User> friends = new HashSet<>();
 
+    @OneToMany(mappedBy = "requester", cascade = CascadeType.ALL)
+    private Set<FriendRequest> sentRequests = new HashSet<>();
+
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+    private Set<FriendRequest> receivedRequests = new HashSet<>();
 
     public void addFriend(User user) {
         this.friends.add(user);

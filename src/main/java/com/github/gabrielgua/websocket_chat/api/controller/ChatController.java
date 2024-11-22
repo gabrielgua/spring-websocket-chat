@@ -11,6 +11,7 @@ import com.github.gabrielgua.websocket_chat.domain.model.ChatType;
 import com.github.gabrielgua.websocket_chat.domain.model.User;
 import com.github.gabrielgua.websocket_chat.domain.service.ChatService;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +53,7 @@ public class ChatController {
     }
 
     @PostMapping
-    public ChatResponse createNew(@RequestBody ChatRequest request) {
+    public ChatResponse createNew(@Valid @RequestBody ChatRequest request) {
         List<User> users = request.getUsers().stream()
                 .map(userService::findById)
                 .toList();
