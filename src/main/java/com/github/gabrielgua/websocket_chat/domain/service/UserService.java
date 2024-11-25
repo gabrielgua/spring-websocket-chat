@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+import static com.github.gabrielgua.websocket_chat.domain.model.UserStatus.OFFLINE;
+import static com.github.gabrielgua.websocket_chat.domain.model.UserStatus.ONLINE;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -22,7 +25,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<User> findAllConnected() {
-        return repository.findAllByStatus(UserStatus.ONLINE);
+        return repository.findAllByStatus(ONLINE);
     }
 
     @Transactional(readOnly = true)
@@ -43,7 +46,7 @@ public class UserService {
     @Transactional
     public User save(User user) {
         if (user.isNew()) {
-            user.setStatus(UserStatus.OFFLINE);
+            user.setStatus(OFFLINE);
             user.setPassword(encoder.encode(user.getPassword()));
             user.setAvatarUrl(String.format("%s&seed=%s", AVATAR_URL, user.getUsername() + UUID.randomUUID()));
         }
@@ -55,13 +58,13 @@ public class UserService {
 
     @Transactional
     public User connect(User user) {
-        user.setStatus(UserStatus.ONLINE);
+        user.setStatus(ONLINE);
         return repository.save(user);
     }
 
     @Transactional
     public User disconnect(User user) {
-        user.setStatus(UserStatus.OFFLINE);
+        user.setStatus(OFFLINE);
         return repository.save(user);
     }
 }

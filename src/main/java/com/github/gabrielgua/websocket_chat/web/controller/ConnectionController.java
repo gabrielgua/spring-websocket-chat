@@ -24,10 +24,7 @@ public class ConnectionController {
     private final UserService service;
     private final UserMapper mapper;
 
-    @GetMapping("/api/users/connected")
-    public List<User> listConnectedUsers() {
-        return service.findAllConnected();
-    }
+
 
     @MessageMapping("user.connectUser")
     @SendTo("/topic/notifications")
