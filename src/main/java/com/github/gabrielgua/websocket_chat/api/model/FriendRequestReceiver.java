@@ -1,14 +1,12 @@
 package com.github.gabrielgua.websocket_chat.api.model;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class FriendRequestRequest {
+public class FriendRequestReceiver {
 
     @NotNull
     private Long receiverId;
