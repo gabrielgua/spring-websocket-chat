@@ -24,6 +24,7 @@ public class FriendRequestService {
     public FriendRequest save(User requester, User receiver) {
 
         checkRequestAlreadyExists(requester, receiver);
+        checkAlreadyFriends(requester, receiver);
 
         var requestId = new FriendRequestId(requester.getId(), receiver.getId());
         var request = FriendRequest.builder()
@@ -54,6 +55,13 @@ public class FriendRequestService {
     public void checkCanBeChanged(FriendRequest request) {
         if (request.getStatus() != PENDING) {
             throw new RuntimeException("Request is already " + request.getStatus());
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void checkAlreadyFriends(User requester, User receiver) {
+        if (requester.getFriends().contains(receiver) || receiver.getFriends().contains(requester)) {
+            throw new RuntimeException("Cannot make a request to an already friend user");
         }
     }
 
