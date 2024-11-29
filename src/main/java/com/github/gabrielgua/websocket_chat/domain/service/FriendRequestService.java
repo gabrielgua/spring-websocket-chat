@@ -1,5 +1,6 @@
 package com.github.gabrielgua.websocket_chat.domain.service;
 
+import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
 import com.github.gabrielgua.websocket_chat.domain.model.FriendRequest;
 import com.github.gabrielgua.websocket_chat.domain.model.FriendRequestId;
 import com.github.gabrielgua.websocket_chat.domain.model.FriendRequestStatus;
@@ -18,7 +19,7 @@ import static com.github.gabrielgua.websocket_chat.domain.model.FriendRequestSta
 public class FriendRequestService {
 
     private final FriendRequestRepository repository;
-    private final UserService userService;
+    private final AuthUtils authUtils;
 
     @Transactional
     public FriendRequest save(User requester, User receiver) {
@@ -52,13 +53,25 @@ public class FriendRequestService {
         repository.save(request);
     }
 
+    @Transactional
+    public void cancel(FriendRequest request) {
+        checkUserCanCancelRequest(request);
+        repository.delete(request);
+    }
+
+    public void checkUserCanCancelRequest(FriendRequest request) {
+        var authenticated = authUtils.getAuthenticatedUser();
+        if (!request.getRequester().equals(authenticated)) {
+            throw new RuntimeException("Only the requester can cancel a request");
+        }
+    }
+
     public void checkCanBeChanged(FriendRequest request) {
         if (request.getStatus() != PENDING) {
             throw new RuntimeException("Request is already " + request.getStatus());
         }
     }
 
-    @Transactional(readOnly = true)
     public void checkAlreadyFriends(User requester, User receiver) {
         if (requester.getFriends().contains(receiver) || receiver.getFriends().contains(requester)) {
             throw new RuntimeException("Cannot make a request to an already friend user");
@@ -77,8 +90,8 @@ public class FriendRequestService {
     }
 
     @Transactional(readOnly = true)
-    public FriendRequest findByIds(Long requesterId, Long receiverId) {
+    public FriendRequest findById(Long requesterId, Long receiverId) {
         var requestId = new FriendRequestId(requesterId, receiverId);
-        return repository.findById(requestId).orElseThrow(() -> new RuntimeException("Not found for ids!"));
+        return repository.findById(requestId).orElseThrow(() -> new RuntimeException("No request found for id!"));
     }
 }

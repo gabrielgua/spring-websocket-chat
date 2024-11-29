@@ -62,7 +62,7 @@ public class UserFriendRequestController {
         var receiver = authUtils.getAuthenticatedUser();
         var requester = userService.findById(requestBody.getRequesterId());
 
-        var request = requestService.findByIds(requester.getId(), receiver.getId());
+        var request = requestService.findById(requester.getId(), receiver.getId());
         requestService.accept(request);
 
 
@@ -77,9 +77,19 @@ public class UserFriendRequestController {
         var receiver = authUtils.getAuthenticatedUser();
         var requester = userService.findById(requestBody.getRequesterId());
 
-        var request = requestService.findByIds(requester.getId(), receiver.getId());
+        var request = requestService.findById(requester.getId(), receiver.getId());
         requestService.reject(request);
 
         return ResponseEntity.ok("Request rejected!");
     }
+
+    @DeleteMapping("/cancel")
+    public ResponseEntity<?> cancelRequest(@Valid @RequestBody FriendRequestReceiver requestId) {
+        var user = authUtils.getAuthenticatedUser();
+        var request = requestService.findById(user.getId(), requestId.getReceiverId());
+        requestService.cancel(request);
+
+        return ResponseEntity.ok("Request canceled!");
+    }
+
 }
