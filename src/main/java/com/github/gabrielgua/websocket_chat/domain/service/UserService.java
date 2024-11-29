@@ -1,5 +1,6 @@
 package com.github.gabrielgua.websocket_chat.domain.service;
 
+import com.github.gabrielgua.websocket_chat.domain.exception.UserNotFoundException;
 import com.github.gabrielgua.websocket_chat.domain.model.UserStatus;
 import com.github.gabrielgua.websocket_chat.domain.model.User;
 import com.github.gabrielgua.websocket_chat.domain.repository.UserRepository;
@@ -30,7 +31,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Not found with id"));
+        return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Transactional(readOnly = true)

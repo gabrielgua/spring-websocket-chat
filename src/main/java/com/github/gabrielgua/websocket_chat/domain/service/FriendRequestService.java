@@ -1,6 +1,7 @@
 package com.github.gabrielgua.websocket_chat.domain.service;
 
 import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
+import com.github.gabrielgua.websocket_chat.domain.exception.*;
 import com.github.gabrielgua.websocket_chat.domain.model.FriendRequest;
 import com.github.gabrielgua.websocket_chat.domain.model.FriendRequestId;
 import com.github.gabrielgua.websocket_chat.domain.model.FriendRequestStatus;
@@ -24,6 +25,8 @@ public class FriendRequestService {
     @Transactional
     public FriendRequest save(User requester, User receiver) {
 
+
+        checkRequestDifferentUser(requester, receiver);
         checkRequestAlreadyExists(requester, receiver);
         checkAlreadyFriends(requester, receiver);
 
@@ -62,36 +65,43 @@ public class FriendRequestService {
     public void checkUserCanCancelRequest(FriendRequest request) {
         var authenticated = authUtils.getAuthenticatedUser();
         if (!request.getRequester().equals(authenticated)) {
-            throw new RuntimeException("Only the requester can cancel a request");
+            throw new NotRequesterException();
+        }
+    }
+
+    public void checkRequestDifferentUser(User requester, User receiver) {
+        if (requester.equals(receiver)) {
+            throw new EqualRequesterAndReceiverException();
         }
     }
 
     public void checkCanBeChanged(FriendRequest request) {
         if (request.getStatus() != PENDING) {
-            throw new RuntimeException("Request is already " + request.getStatus());
+            throw new FriendRequestAlreadyResolvedException();
         }
     }
 
     public void checkAlreadyFriends(User requester, User receiver) {
         if (requester.getFriends().contains(receiver) || receiver.getFriends().contains(requester)) {
-            throw new RuntimeException("Cannot make a request to an already friend user");
+            throw new UserAlreadyFriendsException();
         }
     }
 
     @Transactional(readOnly = true)
     public void checkRequestAlreadyExists(User requester, User receiver) {
-        if (repository.existsByRequesterAndReceiver(requester, receiver)) {
-            throw new RuntimeException("Request already sent!");
-        }
 
-        if (repository.existsByRequesterAndReceiver(receiver, requester)) {
-            throw new RuntimeException("This user has already sent you a request!");
+        var requestExists =
+                repository.existsByRequesterAndReceiver(requester, receiver)
+                || repository.existsByRequesterAndReceiver(receiver, requester);
+
+        if (requestExists) {
+            throw new FriendRequestAlreadyExistsException();
         }
     }
 
     @Transactional(readOnly = true)
     public FriendRequest findById(Long requesterId, Long receiverId) {
         var requestId = new FriendRequestId(requesterId, receiverId);
-        return repository.findById(requestId).orElseThrow(() -> new RuntimeException("No request found for id!"));
+        return repository.findById(requestId).orElseThrow(() -> new FriendRequestNotFoundException(requestId));
     }
 }

@@ -1,5 +1,6 @@
 package com.github.gabrielgua.websocket_chat.domain.service;
 
+import com.github.gabrielgua.websocket_chat.domain.exception.ChatNotFoundException;
 import com.github.gabrielgua.websocket_chat.domain.model.Chat;
 import com.github.gabrielgua.websocket_chat.domain.model.User;
 import com.github.gabrielgua.websocket_chat.domain.repository.ChatRepository;
@@ -28,8 +29,8 @@ public class ChatService {
     }
 
     @Transactional(readOnly = true)
-    public Chat findById(String uuid) {
-        return repository.findById(UUID.fromString(uuid)).orElseThrow(() -> new RuntimeException("Not found for uuid"));
+    public Chat findById(String chatId) {
+        return repository.findById(UUID.fromString(chatId)).orElseThrow(() -> new ChatNotFoundException(chatId));
     }
 
     @Transactional

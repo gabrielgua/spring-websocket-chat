@@ -1,16 +1,14 @@
 package com.github.gabrielgua.websocket_chat.domain.service;
 
+import com.github.gabrielgua.websocket_chat.domain.exception.MessageNotFoundException;
 import com.github.gabrielgua.websocket_chat.domain.model.Chat;
 import com.github.gabrielgua.websocket_chat.domain.model.Message;
-import com.github.gabrielgua.websocket_chat.domain.model.User;
 import com.github.gabrielgua.websocket_chat.domain.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +22,8 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public Message findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+    public Message findById(Long messageId) {
+        return repository.findById(messageId).orElseThrow(() -> new MessageNotFoundException(messageId));
     }
 
     @Transactional

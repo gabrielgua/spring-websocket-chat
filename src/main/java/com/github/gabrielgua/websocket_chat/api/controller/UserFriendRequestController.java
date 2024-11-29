@@ -48,9 +48,9 @@ public class UserFriendRequestController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<?> sendRequest(@Valid @RequestBody FriendRequestReceiver requestBody) {
+    public ResponseEntity<?> sendRequest(@Valid @RequestBody FriendRequestReceiver receiverRequest) {
         var requester = authUtils.getAuthenticatedUser();
-        var receiver = userService.findById(requestBody.getReceiverId());
+        var receiver = userService.findById(receiverRequest.getReceiverId());
 
         var response = requestMapper.toResponseReceived(requestService.save(requester, receiver));
         wsService.sendRequestNotification(receiver, response);
@@ -58,9 +58,9 @@ public class UserFriendRequestController {
     }
 
     @PutMapping("/accept")
-    public ResponseEntity<?> acceptRequest(@Valid @RequestBody FriendRequestRequester requestBody) {
+    public ResponseEntity<?> acceptRequest(@Valid @RequestBody FriendRequestRequester requesterRequest) {
         var receiver = authUtils.getAuthenticatedUser();
-        var requester = userService.findById(requestBody.getRequesterId());
+        var requester = userService.findById(requesterRequest.getRequesterId());
 
         var request = requestService.findById(requester.getId(), receiver.getId());
         requestService.accept(request);
@@ -73,10 +73,10 @@ public class UserFriendRequestController {
     }
 
     @DeleteMapping("/reject")
-    public ResponseEntity<?> rejectRequest(@Valid @RequestBody FriendRequestRequester requestBody) {
+    public ResponseEntity<?> rejectRequest(@Valid @RequestBody FriendRequestRequester requesterRequest) {
         var receiver = authUtils.getAuthenticatedUser();
-        var requester = userService.findById(requestBody.getRequesterId());
 
+        var requester = userService.findById(requesterRequest.getRequesterId());
         var request = requestService.findById(requester.getId(), receiver.getId());
         requestService.reject(request);
 
@@ -84,9 +84,10 @@ public class UserFriendRequestController {
     }
 
     @DeleteMapping("/cancel")
-    public ResponseEntity<?> cancelRequest(@Valid @RequestBody FriendRequestReceiver requestId) {
+    public ResponseEntity<?> cancelRequest(@Valid @RequestBody FriendRequestReceiver receiverRequest) {
         var user = authUtils.getAuthenticatedUser();
-        var request = requestService.findById(user.getId(), requestId.getReceiverId());
+        var receiver = userService.findById(receiverRequest.getReceiverId());
+        var request = requestService.findById(user.getId(), receiver.getId());
         requestService.cancel(request);
 
         return ResponseEntity.ok("Request canceled!");
