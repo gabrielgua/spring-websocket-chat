@@ -40,7 +40,7 @@ public class User {
     )
     private Set<Message> unread = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_friends",
             joinColumns = @JoinColumn(name = "user_id"),

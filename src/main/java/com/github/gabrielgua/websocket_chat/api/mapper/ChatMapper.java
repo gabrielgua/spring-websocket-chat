@@ -104,17 +104,26 @@ public class ChatMapper {
     }
 
     public Chat toEntity(ChatRequest request, List<User> users, User creator) {
-        var chat = new Chat();
+        return Chat.builder()
+                .id(UUID.randomUUID())
+                .creator(creator)
+                .type(request.getType())
+                .users(new HashSet<>(users))
+                .name(request.getName())
+                .description(request.getDescription())
+                .createdAt(OffsetDateTime.now())
+                .build();
+    }
 
-        chat.setId(UUID.randomUUID());
-        chat.setCreator(creator);
-        chat.setType(request.getType());
-        chat.setName(request.getName());
-        chat.setDescription(request.getDescription());
-        chat.setUsers(new HashSet<>(users));
-        chat.setCreatedAt(OffsetDateTime.now());
-
-        return chat;
+    public Chat toEntity(User requester, User receiver) {
+        return Chat.builder()
+                .id(UUID.randomUUID())
+                .creator(requester)
+                .type(ChatType.PRIVATE)
+                .name(String.format("%s, %s", requester.getUsername(), receiver.getUsername()))
+                .createdAt(OffsetDateTime.now())
+                .users(Set.of(requester, receiver))
+                .build();
     }
 
 }

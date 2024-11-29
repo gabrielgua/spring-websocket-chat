@@ -43,6 +43,7 @@ public class UserService {
         return repository.findByUsername(username).orElseThrow(() -> new RuntimeException("Username not found"));
     }
 
+
     @Transactional
     public User save(User user) {
         if (user.isNew()) {

@@ -5,6 +5,7 @@ import com.github.gabrielgua.websocket_chat.api.model.AuthRequest;
 import com.github.gabrielgua.websocket_chat.api.model.AuthResponse;
 import com.github.gabrielgua.websocket_chat.api.model.UserRequest;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
+import com.github.gabrielgua.websocket_chat.web.service.WebsocketService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,8 @@ public class AuthController {
     private final AuthService authService;
     private final UserService userService;
     private final UserMapper userMapper;
+    private final AuthUtils authUtils;
+    private final WebsocketService wsService;
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {

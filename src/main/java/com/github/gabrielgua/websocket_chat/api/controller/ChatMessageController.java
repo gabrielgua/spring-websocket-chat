@@ -40,7 +40,7 @@ public class ChatMessageController {
         var response = messageMapper.toResponse(message);
 
         userMessageService.addUnreadToOffline(chat, message);
-        wsService.sendChatMessage(chatId, response);
+        wsService.sendMessageToChat(chatId, response);
     }
 
 }

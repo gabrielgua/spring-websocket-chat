@@ -3,6 +3,7 @@ package com.github.gabrielgua.websocket_chat.api.mapper;
 import com.github.gabrielgua.websocket_chat.api.model.FriendRequestResponse;
 import com.github.gabrielgua.websocket_chat.api.model.UserResponse;
 import com.github.gabrielgua.websocket_chat.domain.model.FriendRequest;
+import com.github.gabrielgua.websocket_chat.domain.model.FriendRequestId;
 import com.github.gabrielgua.websocket_chat.domain.model.User;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class FriendRequestMapper {
 
     public FriendRequestResponse.FriendRequestResponseBuilder toResponse(FriendRequest request) {
         return FriendRequestResponse.builder()
+                .id(new FriendRequestId(request.getId().getRequesterId(), request.getId().getReceiverId()))
                 .status(request.getStatus())
                 .createdAt(request.getCreatedAt());
     }

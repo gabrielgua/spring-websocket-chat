@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/users")
@@ -20,9 +21,13 @@ public class UserController {
 
     private final UserService service;
     private final UserMapper mapper;
+    private final AuthUtils auth;
 
     @GetMapping
     public List<UserResponse> searchByNameOrUsername(@Param("term") String term) {
-        return mapper.toCollectionResponse(service.findByUsernameOrNameContaining(term));
+        return mapper.toCollectionResponse(service.findByUsernameOrNameContaining(term))
+                .stream()
+                .filter(user -> !Objects.equals(user.getId(), auth.getAuthenticatedUser().getId()))
+                .toList();
     }
 }

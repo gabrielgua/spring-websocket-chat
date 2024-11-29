@@ -2,6 +2,7 @@ package com.github.gabrielgua.websocket_chat.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.github.gabrielgua.websocket_chat.domain.model.FriendRequestId;
 import com.github.gabrielgua.websocket_chat.domain.model.FriendRequestStatus;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.time.OffsetDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FriendRequestResponse {
 
+    private FriendRequestId id;
     private UserResponse requester;
     private UserResponse receiver;
     private FriendRequestStatus status;
