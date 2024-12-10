@@ -8,6 +8,7 @@ import com.github.gabrielgua.websocket_chat.domain.model.Message;
 import com.github.gabrielgua.websocket_chat.domain.model.User;
 import com.github.gabrielgua.websocket_chat.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,6 +18,10 @@ import java.util.List;
 public class MessageMapper {
 
     private final UserMapper userMapper;
+
+    public Page<MessageResponse> toPageResponse(Page<Message> messagePage) {
+        return messagePage.map(this::toResponse);
+    }
 
     public MessageResponse toResponse(Message message) {
         return MessageResponse.builder()

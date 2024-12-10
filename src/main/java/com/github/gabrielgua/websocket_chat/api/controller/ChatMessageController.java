@@ -1,17 +1,19 @@
 package com.github.gabrielgua.websocket_chat.api.controller;
 
 import com.github.gabrielgua.websocket_chat.api.mapper.MessageMapper;
+import com.github.gabrielgua.websocket_chat.api.mapper.PageMapper;
 import com.github.gabrielgua.websocket_chat.api.model.MessageRequest;
 import com.github.gabrielgua.websocket_chat.api.model.MessageResponse;
+import com.github.gabrielgua.websocket_chat.api.model.PageResponse;
 import com.github.gabrielgua.websocket_chat.api.security.AuthUtils;
+import com.github.gabrielgua.websocket_chat.domain.model.Message;
 import com.github.gabrielgua.websocket_chat.domain.service.ChatService;
 import com.github.gabrielgua.websocket_chat.domain.service.MessageService;
 import com.github.gabrielgua.websocket_chat.domain.service.UserMessageService;
 import com.github.gabrielgua.websocket_chat.web.service.WebsocketService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,11 +26,18 @@ public class ChatMessageController {
     private final WebsocketService wsService;
     private final AuthUtils auth;
     private final MessageMapper messageMapper;
+    private final PageMapper<Message, MessageResponse> pageMapper;
 
     @GetMapping
-    public List<MessageResponse> findAllByChat(@PathVariable String chatId) {
+    public PageResponse<MessageResponse> findAllByChat(
+            @PathVariable String chatId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
         var chat = chatService.findById(chatId);
-        return messageMapper.toCollectionResponse(messageService.findAllByChat(chat));
+
+        var pageable = messageService.findAllByChat(chat, page, size);
+
+        return pageMapper.toPageResponse(pageable, messageMapper::toResponse);
     }
 
     @PostMapping
@@ -44,4 +53,3 @@ public class ChatMessageController {
     }
 
 }
-
