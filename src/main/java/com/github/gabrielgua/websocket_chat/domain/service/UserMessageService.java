@@ -38,4 +38,6 @@ public class UserMessageService {
         user.removeUnreadList(messages);
         userService.save(user);
     }
+
+
 }

@@ -37,7 +37,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
         if (body == null || body instanceof String) {
             var status = HttpStatus.valueOf(statusCode.value());
-            body = createProblemBuilder(GENERIC_ERROR_MESSAGE, status).build();
+            body = createProblemBuilder(!ex.getMessage().isEmpty() ? ex.getMessage() : GENERIC_ERROR_MESSAGE, status).build();
         }
 
         return super.handleExceptionInternal(ex, body, headers, statusCode, request);
@@ -49,6 +49,12 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
                 .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<?> handleBusiness(BusinessException ex, WebRequest request) {
+        var status = HttpStatus.INTERNAL_SERVER_ERROR;
+        return handleExceptionInternal(ex, null, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -115,6 +121,4 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
-
-
 }

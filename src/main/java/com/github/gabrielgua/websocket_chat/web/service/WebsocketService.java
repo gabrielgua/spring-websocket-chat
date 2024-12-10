@@ -19,7 +19,6 @@ import static com.github.gabrielgua.websocket_chat.domain.model.UserStatus.ONLIN
 public class WebsocketService {
 
     private static final String CHAT_TOPIC = "/topic/chats";
-    private final UserService userService;
     private final ChatService chatService;
 
     private final SimpMessagingTemplate messagingTemplate;

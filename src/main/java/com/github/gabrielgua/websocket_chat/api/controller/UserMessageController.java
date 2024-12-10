@@ -16,29 +16,5 @@ import java.util.List;
 @RequestMapping("/api/users/messages")
 public class UserMessageController {
 
-    private final AuthUtils authUtils;
-    private final MessageMapper messageMapper;
-    private final MessageService messageService;
-    private final UserMessageService userMessageService;
 
-    @GetMapping("/unread")
-    public List<MessageResponse> listUnread() {
-        var user = authUtils.getAuthenticatedUser();
-        return messageMapper.toCollectionResponse(user.getUnread().stream().toList());
-    }
-
-    @PutMapping("/unread/add/{messageId}")
-    public void addUnread(@PathVariable Long messageId) {
-        var message = messageService.findById(messageId);
-
-        var user = authUtils.getAuthenticatedUser();
-        userMessageService.addMessageToUnreadList(user, message);
-    }
-
-    @DeleteMapping("/unread/remove")
-    public void removeUnread(@RequestBody List<Long> messageIds) {
-        var user = authUtils.getAuthenticatedUser();
-        List<Message> messages = messageIds.stream().map(messageService::findById).toList();
-        userMessageService.removeUnreadMessages(user, messages);
-    }
 }

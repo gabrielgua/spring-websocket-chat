@@ -45,15 +45,13 @@ public class FriendRequestService {
     @Transactional
     public void accept(FriendRequest request) {
         checkCanBeChanged(request);
-        request.setStatus(ACCEPTED);
-        repository.save(request);
+        repository.delete(request);
     }
 
     @Transactional
-    public void reject(FriendRequest request) {
+    public void deny(FriendRequest request) {
         checkCanBeChanged(request);
-        request.setStatus(REJECTED);
-        repository.save(request);
+        repository.delete(request);
     }
 
     @Transactional
