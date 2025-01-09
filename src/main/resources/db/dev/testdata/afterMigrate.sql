@@ -24,11 +24,11 @@ insert into users_friends (user_id, friend_id) values
 (3, 1), (3, 4),
 (4, 3);
 
-insert into chats (id, name, type, created_at, description, creator_id) values
-("86a8c397-be8a-4582-a1f4-7e1a95eab639", "Vasco OFC", "GROUP", "2024-06-19T11:11:11", "Grupinho dos guri do Vasco OFICIAL 👌🔥", 1),
-("47a91172-9529-4917-9258-3486231ea12f", "opaco, usuario", "PRIVATE", "2024-04-18 12:13:22", null, 1),
-("c198560d-496b-4f05-a2ac-f1f052113854", "usuario, guaitanele", "PRIVATE", "2024-10-08 12:04:55", null, 3),
-("ca3eb690-7afa-4a5d-b65f-e07cca178cf2", "opaco, gabrielgua", "PRIVATE", "2024-06-18 17:19:45", null, 1);
+insert into chats (id, name, type, created_at, description, creator_id, image_url) values
+("86a8c397-be8a-4582-a1f4-7e1a95eab639", "Vasco OFC", "GROUP", "2024-06-19T11:11:11", "Grupinho dos guri do Vasco OFICIAL 👌🔥", 1, "https://api.dicebear.com/9.x/initials/svg?backgroundType=gradientLinear&fontWeight=700&seed=Vasco_OFC"),
+("47a91172-9529-4917-9258-3486231ea12f", "opaco, usuario", "PRIVATE", "2024-04-18 12:13:22", null, 1, null),
+("c198560d-496b-4f05-a2ac-f1f052113854", "usuario, guaitanele", "PRIVATE", "2024-10-08 12:04:55", null, 3, null),
+("ca3eb690-7afa-4a5d-b65f-e07cca178cf2", "opaco, gabrielgua", "PRIVATE", "2024-06-18 17:19:45", null, 1, null);
 
 insert into chats_users (chat_id, user_id) values
 ("86a8c397-be8a-4582-a1f4-7e1a95eab639", 1),
@@ -57,10 +57,3 @@ insert into messages (id, chat_id, sender_id, content, timestamp) values
 (11, "ca3eb690-7afa-4a5d-b65f-e07cca178cf2", 2, "Testando aqui", "2024-07-10 00:02:54"),
 (12, "ca3eb690-7afa-4a5d-b65f-e07cca178cf2", 1, "Testa aqui então otario", "2024-07-10 00:10:54"),
 (13, "ca3eb690-7afa-4a5d-b65f-e07cca178cf2", 2, "qual foi", "2024-07-10 00:12:54");
-
-
-
-
-
-
-

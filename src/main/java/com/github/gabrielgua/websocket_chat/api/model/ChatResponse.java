@@ -18,6 +18,7 @@ public class ChatResponse {
     private String id;
     private String name;
     private String description;
+    private String imageUrl;
     private ChatType type;
     private OffsetDateTime createdAt;
     private UserResponse receiver;

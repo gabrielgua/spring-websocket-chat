@@ -16,6 +16,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ChatService {
 
+    private static final String IMAGE_URL = "https://api.dicebear.com/9.x/initials/svg?backgroundType=gradientLinear&fontWeight=700";
     private final ChatRepository repository;
 
     @Transactional(readOnly = true)
@@ -35,6 +36,13 @@ public class ChatService {
 
     @Transactional
     public Chat save(Chat chat) {
+        if (chat.isNew() && chat.isGroup()) {
+            chat.setId(UUID.randomUUID());
+            var chatName = chat.getName().trim().replace(" ", "_");
+            var imageUrl = String.format("%s&seed=%s", IMAGE_URL, chatName);
+            chat.setImageUrl(imageUrl);
+        }
+
         return repository.save(chat);
     }
 

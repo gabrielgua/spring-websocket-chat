@@ -31,6 +31,8 @@ public class Chat {
 
     private String description;
 
+    private String imageUrl;
+
     @OneToOne
     private User creator;
 
@@ -52,6 +54,9 @@ public class Chat {
     @OneToMany(mappedBy = "chat")
     private List<Message> messages = new ArrayList<>();
 
+    public boolean isNew() {
+        return this.id == null;
+    }
     public boolean isPrivate() {
         return this.type == ChatType.PRIVATE;
     }

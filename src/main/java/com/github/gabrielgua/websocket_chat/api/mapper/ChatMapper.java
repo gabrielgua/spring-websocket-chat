@@ -27,6 +27,7 @@ public class ChatMapper {
                 .name(chat.getName())
                 .description(chat.getDescription())
                 .type(chat.getType())
+                .imageUrl(chat.getImageUrl())
                 .createdAt(chat.getCreatedAt())
                 .lastMessage(lastMessage)
                 .statusCount(statusCount)
@@ -36,6 +37,7 @@ public class ChatMapper {
         getReceiver(chat).ifPresent(user -> {
             response.name(user.getUsername())
                     .receiver(userMapper.toResponse(user))
+                    .imageUrl(user.getAvatarUrl())
                     .statusCount(null);
         });
 
@@ -96,7 +98,7 @@ public class ChatMapper {
     }
 
     private MessageResponse getLastMessage(Chat chat) {
-        if (chat.getMessages().isEmpty()) {
+        if (chat.getMessages() == null || chat.getMessages().isEmpty()) {
             return MessageResponse.builder().build();
         }
 
@@ -105,7 +107,6 @@ public class ChatMapper {
 
     public Chat toEntity(ChatRequest request, List<User> users, User creator) {
         return Chat.builder()
-                .id(UUID.randomUUID())
                 .creator(creator)
                 .type(request.getType())
                 .users(new HashSet<>(users))

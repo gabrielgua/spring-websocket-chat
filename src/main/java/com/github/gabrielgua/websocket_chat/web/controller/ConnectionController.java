@@ -9,6 +9,9 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 @Controller
 @RequiredArgsConstructor
 public class ConnectionController {
@@ -16,7 +19,7 @@ public class ConnectionController {
     private final UserService service;
     private final UserMapper mapper;
     private final WebsocketService wsService;
-
+    
     @MessageMapping("user.connectUser")
     public void connect(@Payload UserConnectionRequest request) {
         var user = service.connect(service.findById(request.getId()));

@@ -32,9 +32,8 @@ public class ChatMessageController {
     public PageResponse<MessageResponse> findAllByChat(
             @PathVariable String chatId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
+            @RequestParam(defaultValue = "10") int size) {
         var chat = chatService.findById(chatId);
-
         var pageable = messageService.findAllByChat(chat, page, size);
 
         return pageMapper.toPageResponse(pageable, messageMapper::toResponse);

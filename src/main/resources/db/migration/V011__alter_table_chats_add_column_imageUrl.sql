@@ -1,0 +1,1 @@
+alter table chats add column image_url varchar(255) null;
